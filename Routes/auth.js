@@ -3,7 +3,57 @@ const User = require("../Models/User");
 const CryptoJs = require("crypto-js");
 const jwt = require("jsonwebtoken");
 
-// REGISTER
+/**
+ * @swagger
+ * /api/register:
+ *   post:
+ *     summary: Create a new user
+ *     description: Endpoint to create a new user
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Name of the user
+ *               email:
+ *                 type: string
+ *                 description: Email of the user
+ *               password:
+ *                 type: string
+ *                 description: password of the user
+ *             example:
+ *               username: John Doe
+ *               email: john.doe@example.com
+ *               password: string
+ *     responses:
+ *       200:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: ID of the created user
+ *                 name:
+ *                   type: string
+ *                   description: Name of the created user
+ *                 email:
+ *                   type: string
+ *                   description: Email of the created user
+ *       400:
+ *         description: Invalid input
+ */
 router.post("/register", async (req, res) => {
   const newUser = new User({
     username: req.body.username,
@@ -22,7 +72,52 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// LOGIN
+/**
+ * @swagger
+ * /api/login:
+ *   post:
+ *     summary: login user
+ *     description: login user.
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Email of the user
+ *               password:
+ *                 type: string
+ *                 description: password of the user
+ *             example:
+ *               email: john.doe@example.com
+ *               password: string
+ *     responses:
+ *       200:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: ID of the created user
+ *                 name:
+ *                   type: string
+ *                   description: Name of the created user
+ *                 email:
+ *                   type: string
+ *                   description: Email of the created user
+ *       400:
+ *         description: Invalid input
+ */
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -48,7 +143,7 @@ router.post("/login", async (req, res) => {
 
     // as password field is appearing while getting response we need to hide it as:
     const { password, ...others } = user._doc;
-    res.status(200).json({...others,accessToken});
+    res.status(200).json({ ...others, accessToken });
   } catch (e) {
     res.status(500).json(e);
   }

@@ -60,7 +60,16 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
-// GET ALL
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Get a list of users
+ *     description: Retrieve a list of users from the database.
+ *     responses:
+ *       200:
+ *         description: Successful response with a list of users.
+ */
 router.get("/", verify, async (req, res) => {
   const query = req.query.new;
   if (req.user.isAdmin) {
